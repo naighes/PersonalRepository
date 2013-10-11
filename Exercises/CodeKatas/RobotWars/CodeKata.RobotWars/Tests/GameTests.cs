@@ -84,5 +84,24 @@ namespace CodeKata.RobotWars.Tests
                     Assert.Equal("5 1 E", robots[1].ToString());
                 });
         }
+
+        [Fact]
+        public void StateIsPreserved()
+        {
+            var game = new Game(5, 5);
+            game.Take("0 0 N");
+            game.Take("M");
+            game.Take("1 1 E");
+            game.Take("M");
+
+            game.WithRobots(robots =>
+                {
+                    Assert.Equal("0 1 N", robots[0].ToString());
+                    Assert.Equal("2 1 E", robots[1].ToString());
+                    robots[0].Move();
+                });
+
+            game.WithRobots(robots => Assert.Equal("0 1 N", robots[0].ToString()));
+        }
     }
 }

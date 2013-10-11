@@ -21,27 +21,33 @@ namespace CodeKata.RobotWars
 
         public void WithRobots(Action<Robot[]> action)
         {
-            action(_robots.ToArray());
+            action(_robots.Select(r => Robot.New(r.ToString())).ToArray());
         }
 
         public void Take(String input)
         {
-            CommandFactory.Build(input).Execute(this);
+            InputCommands.First(command => command.Key(input)).Value(_robots, input);
         }
 
-        internal void AddRobot(Robot robot)
-        {
-            _robots.Add(robot);
-        }
+        private static readonly IDictionary<Predicate<String>, Action<IList<Robot>, String>> InputCommands = 
+            new Dictionary<Predicate<String>, Action<IList<Robot>, String>>
+                {
+                    {
+                        input => Char.IsNumber(input[0]), 
+                        (robots, input) => robots.Add(Robot.New(input))
+                    },
+                    {
+                        input => true, 
+                        (robots, input) => input.ToList().ForEach(c => TransformationCommands[c](robots.Last()))
+                    }
+                };
 
-        internal void RotateRobot(Char input)
-        {
-            _robots.Last().Turn(input);
-        }
-
-        internal void MoveRobot(Char input)
-        {
-            _robots.Last().Move(input);
-        }
+        private static readonly IDictionary<Char, Action<Robot>> TransformationCommands =
+            new Dictionary<Char, Action<Robot>>
+                {
+                    {'L', robot => robot.TurnLeft()},
+                    {'R', robot => robot.TurnRight()},
+                    {'M', robot => robot.Move()}
+                };
     }
 }

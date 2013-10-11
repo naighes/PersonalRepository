@@ -3,7 +3,7 @@ using Xunit;
 
 namespace CodeKata.RobotWars.Tests
 {
-    public class PositionalInfoTests
+    public class RobotTests
     {
         [Fact]
         public void BuildFromArray()

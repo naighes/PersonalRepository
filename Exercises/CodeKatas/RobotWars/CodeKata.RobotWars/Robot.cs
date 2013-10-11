@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CodeKata.RobotWars
 {
-    public class Robot
+    public partial class Robot
     {
         private Robot(Point position, Char orientation)
         {
@@ -19,24 +19,26 @@ namespace CodeKata.RobotWars
 
         public Char Orientation
         {
-            get
-            {
-                return CardinalCompassPoints[_orientation & (CardinalCompassPoints.Length - 1)];
-            }
+            get { return CardinalCompassPoints[_orientation & (CardinalCompassPoints.Length - 1)]; }
         }
         private Int32 _orientation;
 
-        internal void Turn(Char input)
+        public void TurnLeft()
         {
-            RotateCommands[input](this);
+            _orientation--;
         }
 
-        public void Move(Char input)
+        public void TurnRight()
         {
-            MovementCommands[Orientation](this);
+            _orientation++;
         }
 
-        private static readonly IDictionary<Char, Action<Robot>> MovementCommands =
+        public void Move()
+        {
+            MovementRouteCommands[Orientation](this);
+        }
+
+        private static readonly IDictionary<Char, Action<Robot>> MovementRouteCommands =
             new Dictionary<Char, Action<Robot>>
                 {
                     {'N', robot => robot._position.Y++},
@@ -45,31 +47,7 @@ namespace CodeKata.RobotWars
                     {'E', robot => robot._position.X++},
                 };
 
-        private static readonly IDictionary<Char, Action<Robot>> RotateCommands =
-            new Dictionary<Char, Action<Robot>>
-                {
-                    {'L', robot => robot._orientation = robot._orientation - 1},
-                    {'R', robot => robot._orientation = robot._orientation + 1}
-                };
-
         private static readonly Char[] CardinalCompassPoints = new[] {'N', 'E', 'S', 'W'};
-
-        internal static Robot New(String input)
-        {
-            var array = input.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-            if (array.Length != 3)
-                throw new FormatException();
-
-            var x = Int32.Parse(array[0]);
-            var y = Int32.Parse(array[1]);
-            var orientation = array[2][0];
-
-            if (Array.IndexOf(CardinalCompassPoints, orientation) == -1)
-                throw new FormatException();
-
-            return new Robot(new Point(x, y), orientation);
-        }
 
         public override String ToString()
         {
