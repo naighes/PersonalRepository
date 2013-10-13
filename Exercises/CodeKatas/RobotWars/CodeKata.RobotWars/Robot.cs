@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace CodeKata.RobotWars
 {
@@ -25,12 +26,12 @@ namespace CodeKata.RobotWars
 
         public void TurnLeft()
         {
-            _orientation--;
+            Interlocked.Decrement(ref _orientation);
         }
 
         public void TurnRight()
         {
-            _orientation++;
+            Interlocked.Increment(ref _orientation);
         }
 
         public void Move()
@@ -41,10 +42,10 @@ namespace CodeKata.RobotWars
         private static readonly IDictionary<Char, Action<Robot>> MovementRouteCommands =
             new Dictionary<Char, Action<Robot>>
                 {
-                    {'N', robot => robot._position.Y++},
-                    {'W', robot => robot._position.X--},
-                    {'S', robot => robot._position.Y--},
-                    {'E', robot => robot._position.X++},
+                    {'N', robot => Interlocked.Increment(ref robot._position.Y)},
+                    {'W', robot => Interlocked.Decrement(ref robot._position.X)},
+                    {'S', robot => Interlocked.Decrement(ref robot._position.Y)},
+                    {'E', robot => Interlocked.Increment(ref robot._position.X)}
                 };
 
         private static readonly Char[] CardinalCompassPoints = new[] {'N', 'E', 'S', 'W'};

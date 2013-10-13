@@ -8,12 +8,16 @@ namespace CodeKata.RobotWars.Tests
     public class GameTests
     {
         [Fact]
-        public void DeclareBoardSize()
+        public void DeclareSquareSizedGame()
         {
             var squareGame = new Game(5, 5);
             Assert.Equal(5, squareGame.BoardSize.X);
             Assert.Equal(5, squareGame.BoardSize.Y);
+        }
 
+        [Fact]
+        public void DeclareRectangularSizedGame()
+        {
             var rectangularGame = new Game(3, 4);
             Assert.Equal(3, rectangularGame.BoardSize.X);
             Assert.Equal(4, rectangularGame.BoardSize.Y);
