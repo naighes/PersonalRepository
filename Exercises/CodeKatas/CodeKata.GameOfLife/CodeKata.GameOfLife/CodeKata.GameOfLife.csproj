@@ -42,7 +42,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Kata.cs" />
+    <Compile Include="AliveCell.cs" />
+    <Compile Include="CellIndex.cs" />
+    <Compile Include="DeadCell.cs" />
+    <Compile Include="Extensions\CellIndexExtensions.cs" />
+    <Compile Include="Generation.cs" />
+    <Compile Include="GenerationTests.cs" />
+    <Compile Include="ICell.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
