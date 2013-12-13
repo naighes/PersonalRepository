@@ -36,7 +36,7 @@ namespace CodeKata.GameOfLife
                     generation.CellAt(_x + 1, _y + 1),
                     generation.CellAt(_x, _y + 1),
                     generation.CellAt(_x - 1, _y + 1)
-                }.OfType<AliveCell>().Cast<ICell>());
+                });
         }
 
         #region Equality members
