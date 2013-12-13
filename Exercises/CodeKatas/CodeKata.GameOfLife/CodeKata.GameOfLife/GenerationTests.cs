@@ -72,7 +72,9 @@ namespace CodeKata.GameOfLife
                 };
             var generation = Generation.New(3, liveCells);
 
-            Assert.IsType<AliveCell>(generation.Next().CellAt(1, 1));
+            var newGeneration = generation.Next();
+            Assert.IsType<AliveCell>(newGeneration.CellAt(1, 1));
+            Assert.IsType<DeadCell>(newGeneration.CellAt(0, 0));
         }
     }
 }

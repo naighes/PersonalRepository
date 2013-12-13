@@ -25,6 +25,8 @@ namespace CodeKata.GameOfLife
 
             if (aliveNeighboursCount == 3)
                 onSpare(this);
+            else
+                onDeath(this);
         }
 
         #region Equality members
