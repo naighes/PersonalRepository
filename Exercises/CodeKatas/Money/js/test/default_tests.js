@@ -1,53 +1,26 @@
-var Money = function(amount) {
+var Money = function(amount, currency) {
     this.amount = amount;
+    this.currency = currency;
 }
 
 var Dollar = function(amount) {
-    this.amount = amount;
+    Money.call(this, amount, "USD");
 };
 
 Dollar.prototype = new Money();
 
 var Franc = function(amount) {
-    this.amount = amount;
+    Money.call(this, amount, "CHF");
 };
 
 Franc.prototype = new Money();
 
-Money.prototype.currency = function() {
-    return "";
-};
-
-Dollar.prototype.currency = function() {
-    return "USD";
-};
-
-Franc.prototype.currency = function() {
-    return "CHF";
-};
-
-Money.prototype.dollar = function(amount) {
-    return new Dollar(amount);
-}
-
-Money.prototype.franc = function(amount) {
-    return new Franc(amount);
-}
-
 Money.prototype.times = function(multiplier) {
-    return new Money(this.amount * multiplier);
-};
-
-Dollar.prototype.times = function(multiplier) {
-    return new Dollar(this.amount * multiplier);
-};
-
-Franc.prototype.times = function(multiplier) {
-    return new Franc(this.amount * multiplier);
+    return new Money(this.amount * multiplier, this.currency);
 };
 
 Money.prototype.equals = function(other) {
-    return other.amount === this.amount && this.currency() === other.currency();
+    return other.amount === this.amount && this.currency === other.currency;
 };
 
 describe("smoke test", function() {
