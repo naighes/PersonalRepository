@@ -1,7 +1,7 @@
-var Dollar = function(amount) {
+var Money = function(amount) {
     this.amount = amount;
     this.times = function(multiplier) {
-        return new Dollar(this.amount * multiplier);
+        return new Money(this.amount * multiplier);
     };
 
     this.equals = function(other) {
@@ -17,7 +17,7 @@ describe("smoke test", function() {
 
 describe("money example", function() {
     it("multiply", function()  {
-        var five = new Dollar(5);
+        var five = new Money(5);
         var product = five.times(2);
         expect(product.amount).toBe(10);
         product = five.times(3);
@@ -25,10 +25,10 @@ describe("money example", function() {
     });
 
     it("equality", function() {
-        var a = new Dollar(5);
-        var b = new Dollar(5);
+        var a = new Money(5);
+        var b = new Money(5);
         expect(a.equals(b)).toBe(true);
-        var c = new Dollar(6);
+        var c = new Money(6);
         expect(a.equals(c)).toBe(false);
     });
 });
