@@ -1,26 +1,24 @@
 var Money = function(amount, currency) {
     this.amount = amount;
     this.currency = currency;
-}
+};
 
 var Dollar = function(amount) {
     Money.call(this, amount, "USD");
 };
-
 Dollar.prototype = new Money();
 
 var Franc = function(amount) {
     Money.call(this, amount, "CHF");
 };
-
 Franc.prototype = new Money();
 
-Money.prototype.times = function(multiplier) {
-    return new Money(this.amount * multiplier, this.currency);
+Money.prototype.multiply = function(times) {
+    return new Money(this.amount * times, this.currency);
 };
 
 Money.prototype.equals = function(other) {
-    return other.amount === this.amount && this.currency === other.currency;
+    return this.amount === other.amount && this.currency == other.currency;
 };
 
 describe("smoke test", function() {
@@ -30,12 +28,18 @@ describe("smoke test", function() {
 });
 
 describe("money example", function() {
-    it("multiply dollars", function()  {
+    it("multiply dollars by scalar", function() {
         var five = new Dollar(5);
-        var product = five.times(2);
-        expect(product.amount).toBe(10);
-        product = five.times(3);
-        expect(product.amount).toBe(15);
+        var ten = five.multiply(2);
+        expect(ten.equals(new Dollar(5 * 2))).toBe(true);
+        var fifteen = five.multiply(3);
+        expect(fifteen.equals(new Dollar(5 * 3))).toBe(true);
+    });
+
+    it("multiply francs by scalar", function() {
+        var five = new Franc(5);
+        var ten = five.multiply(2);
+        expect(ten.equals(new Franc(5 * 2))).toBe(true);
     });
 
     it("equality", function() {
@@ -43,16 +47,19 @@ describe("money example", function() {
         var b = new Dollar(5);
         expect(a.equals(b)).toBe(true);
         var c = new Dollar(6);
-        expect(a.equals(c)).toBe(false);
+        expect(c.equals(a)).toBe(false);
         var d = new Franc(6);
         expect(c.equals(d)).toBe(false);
+        expect(d.equals(c)).toBe(false);
     });
 
-    it("multiply francs", function()  {
-        var five = new Franc(5);
-        var product = five.times(2);
-        expect(product.amount).toBe(10);
-        product = five.times(3);
-        expect(product.amount).toBe(15);
+    it("dollar currency", function() {
+        var dollar = new Dollar(5);
+        expect(dollar.currency).toBe("USD");
+    });
+
+    it("franc currency", function() {
+        var franc = new Franc(5);
+        expect(franc.currency).toBe("CHF");
     });
 });
